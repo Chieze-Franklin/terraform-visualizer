@@ -27,7 +27,10 @@ const ResourceNode = ({
           isConnectable={isConnectable}
           style={{top: ...}}
         /> */}
-        <div className="content-row">{key ? `${key}: ` : ""}<span className={`content-row-value-${typeof data}`}>{`${data}`}</span></div>
+        <div className="content-row">
+          {key ? `${key}: ` : ""}
+          <span className={`content-row-value content-row-value-${typeof data}`} title={`${data}`}>{`${data}`}</span>
+        </div>
         {fullKey ? <Handle
           type="source"
           id={`${id}.${fullKey}`}
@@ -60,7 +63,7 @@ const ResourceNode = ({
         position={Position.Top}
         isConnectable={false}
       />
-      <div className="title">{data?.label}</div>
+      <div className="title" title={data?.label}>{data?.label}</div>
       <div className="content">
         {Object.keys(data?.data).map((key) => {
           const value = data?.data[key];

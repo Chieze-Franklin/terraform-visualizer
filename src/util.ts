@@ -53,22 +53,25 @@ export const buildResourceNodes = (t: string) => {
 const calcHeight = (data: any) => {
     let h = 0;
 
-    if (Array.isArray(data)) {
-        h += 20; // for the array title
-        data.forEach((value) => {
-            h += 20;
-        });
-    } else {
-        Object.keys(data).forEach((key) => {
-            const value = data[key];
-
-            if (typeof value === "bigint" || typeof value === "boolean" || typeof value === "number" || typeof value === "string") {
-                h += 20;
-            } else if (typeof value === "object") {
-                h += 20; // for the object title
+    if (
+        typeof data === "bigint" ||
+        typeof data === "boolean" ||
+        typeof data === "number" ||
+        typeof data === "string" ||
+        typeof data === "undefined") {
+        h += 20;
+    } else if (typeof data === "object") {
+        h += 20; // for the object title
+        if (Array.isArray(data)) {
+            data.forEach((value) => {
                 h += calcHeight(value);
-            }
-        });
+            });
+        } else {
+            Object.keys(data).forEach((key) => {
+                const value = data[key];
+                h += calcHeight(value);
+            });
+        }
     }
 
     return h;

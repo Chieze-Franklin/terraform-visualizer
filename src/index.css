@@ -40,6 +40,9 @@ code {
   font-weight: bold;
   margin: 10px;
   margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .react-flow__node-resource .content {
@@ -52,6 +55,13 @@ code {
 .react-flow__node-resource .content .content-row {
   height: 20px;
   margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.content-row-value {
+  white-space:nowrap;
 }
 
 .react-flow__node-resource .content .content-row .content-row-value-bigint {
