@@ -1,24 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Flow from "./Flow";
+import { useSearchParams } from "react-router-dom";
+// import logo from './logo.svg';
+// import './App.css';
+import './index.css';
 
 function App() {
+  let [searchParams,] = useSearchParams();
+  // <img src={logo} className="App-logo" alt="logo" />
+
+  let t = searchParams.get('t')?.trim();
+  if (t?.endsWith(',')) {
+    t = t.substring(0, t.length - 1);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Flow t={t} />
     </div>
   );
 }
