@@ -1,5 +1,5 @@
 import { Edge } from "reactflow";
-import * as hclParser from "hcl2-parser";
+import hclParser from "hcl2-parser";
 
 export const buildResourceNodes = (content: string) => {
     const json = hclParser.parseToObject(content);
