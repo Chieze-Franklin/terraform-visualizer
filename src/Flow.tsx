@@ -40,7 +40,7 @@ const BasicFlow = (props: { content?: string | null, title?: string | null }) =>
         const newEdges = buildResourceEdges(props.content);
         setEdges((curr) => [...curr, ...newEdges]);
     }
-  }, [props.content])
+  }, [props.content, setNodes, setEdges])
 
   return (
     <ReactFlow
