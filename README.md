@@ -29,18 +29,20 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Running the App
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Start the app locally by running `npm start`. Alternatively, visit the [Netlify deployment](https://terraform-visualizer.netlify.app/).
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Loading Content from URL
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+You can provide the Terraform config via the URL using the `content` URL query.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+>> http://localhost:3000/?content={URL- ENCODED CONTENT}
 
-## Learn More
+First, use any URL-encoder (e.g. https://www.urlencoder.org/) to encode the Terraform config.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![image](https://user-images.githubusercontent.com/6097630/218086422-91116d68-b186-43f7-b14e-8383e58c5cdb.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Then, provide the encoded value in the URL by assigning it to the `content` query.
+
+![image](https://user-images.githubusercontent.com/6097630/218087143-6eae9448-ff25-4cc9-8c06-ad3582277dc5.png)
