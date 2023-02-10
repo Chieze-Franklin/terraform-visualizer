@@ -20,13 +20,6 @@ const ResourceNode = ({
     typeof data === "string" ||
     typeof data === "undefined") {
       return (<React.Fragment key={key}>
-        {/* <Handle
-          type="target"
-          id={`${id}.${key}`}
-          position={Position.Left}
-          isConnectable={isConnectable}
-          style={{top: ...}}
-        /> */}
         <div className="content-row">
           {key ? `${key}: ` : ""}
           <span className={`content-row-value content-row-value-${typeof data}`} title={`${data}`}>{`${data}`}</span>
@@ -34,7 +27,7 @@ const ResourceNode = ({
         {fullKey ? <Handle
           type="source"
           id={`${id}.${fullKey}`}
-          position={Position.Right}
+          position={Position.Left}
           isConnectable={false}
           style={{ top: (ROW_HEIGHT * row) + (ROW_HEIGHT / 2) + TOP_OFFSET }}
         /> : null}
@@ -52,7 +45,7 @@ const ResourceNode = ({
       </React.Fragment>);
     }
 
-    return <div>&lt;unknown property&gt;</div>;
+    return <div>&lt;&lt;unknown property&gt;&gt;</div>;
   }
 
   return (

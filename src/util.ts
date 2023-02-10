@@ -1,7 +1,8 @@
 import { Edge } from "reactflow";
+import * as hclParser from "hcl2-parser";
 
-export const buildResourceNodes = (t: string) => {
-    const json = JSON.parse(t);
+export const buildResourceNodes = (content: string) => {
+    const json = hclParser.parseToObject(content);
 
     let entry1: any = {};
     if (Array.isArray(json)) {
@@ -61,7 +62,7 @@ const calcHeight = (data: any) => {
         typeof data === "undefined") {
         h += 20;
     } else if (typeof data === "object") {
-        h += 20; // for the object title
+        h += 20; // for the object/array title
         if (Array.isArray(data)) {
             data.forEach((value) => {
                 h += calcHeight(value);
@@ -77,8 +78,8 @@ const calcHeight = (data: any) => {
     return h;
 }
 
-export const buildResourceEdges = (t: string) => {
-    const json = JSON.parse(t);
+export const buildResourceEdges = (content: string) => {
+    const json = hclParser.parseToObject(content);
 
     let entry1: any = {};
     if (Array.isArray(json)) {
