@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Terraform Visualizer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://user-images.githubusercontent.com/6097630/219801816-44a3c629-1243-461f-abe3-5de9f9a35b49.mp4
+
+Terraform Visualizer displays the resources in your Terraform config (and the relationships among resources)
+using a graph of nodes (for the resources) and edges (for the relationships).
+
+This app can run as a standalone app (https://terraform-visualizer.netlify.app/) or within the
+[Terraformer VS Code extension](https://marketplace.visualstudio.com/items?itemName=fchieze.terraformer).
 
 ## Available Scripts
 
