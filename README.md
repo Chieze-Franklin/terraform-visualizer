@@ -43,7 +43,7 @@ Start the app locally by running `npm start`. Alternatively, visit the [Netlify 
 
 You can provide the Terraform config via the URL using the `content` URL query.
 
->> http://localhost:3000/?content={URL- ENCODED CONTENT}
+>> http://localhost:3000/?content={ URL-ENCODED CONTENT }
 
 First, use any URL-encoder (e.g. https://www.urlencoder.org/) to encode the Terraform config.
 
