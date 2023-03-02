@@ -38,20 +38,9 @@ export const buildResourceNodes = (resource: Resource, top: number, col: number)
     }).flat();
 }
 
-export const buildResourceEdges = (content: string) => {
-    const json = hclParser.parseToObject(content);
-
-    let entry1: any = {};
-    if (Array.isArray(json)) {
-        entry1 = json[0];
-    } else {
-        entry1 = json;
-    }
-
-    if (!entry1 || !entry1.resource) return [];
-
-    return Object.keys(entry1.resource).map((key) => {
-        const innerEntry = entry1.resource[key];
+export const buildResourceEdges = (resource: Resource) => {
+    return Object.keys(resource).map((key) => {
+        const innerEntry = resource[key];
         return Object.keys(innerEntry).filter((innerKey) => {
             const innerArray = innerEntry[innerKey];
             return Array.isArray(innerArray) && innerArray.length;
