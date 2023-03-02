@@ -11,8 +11,9 @@ import ReactFlow, {
   useEdgesState
 } from "reactflow";
 
+import ModuleNode from "./nodes/ModuleNode";
 import ResourceNode from "./nodes/ResourceNode";
-import { buildResourceEdges, buildResourceNodes } from "./util";
+import { buildEdges, buildNodes } from "./util";
 
 import "reactflow/dist/style.css";
 
@@ -21,6 +22,7 @@ const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];
 
 const nodeTypes = {
+  module: ModuleNode,
   resource: ResourceNode
 };
 
@@ -34,10 +36,10 @@ const BasicFlow = (props: { content?: string | null, title?: string | null }) =>
 
   useEffect(() => {
     if (props.content) {
-        const newNodes = buildResourceNodes(props.content);
+        const newNodes = buildNodes(props.content);
         setNodes((curr) => [...curr, ...newNodes]);
 
-        const newEdges = buildResourceEdges(props.content);
+        const newEdges = buildEdges(props.content);
         setEdges((curr) => [...curr, ...newEdges]);
     }
   }, [props.content, setNodes, setEdges])

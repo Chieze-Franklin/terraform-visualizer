@@ -1,8 +1,20 @@
 import { Edge } from "reactflow";
 import hclParser from "hcl2-parser";
+import { buildModuleEdges, buildModuleNodes } from "./module";
+import { buildResourceEdges, buildResourceNodes } from "./resource";
 
-export const buildResourceNodes = (content: string) => {
+export const MARGIN = 50;
+export const MAX_COLUMNS = 3;
+
+export let newTop = 0;
+export const setNewTop = (top: number) => newTop = top;
+
+export let column = 0;
+export const setColumn = (col: number) => column = col;
+
+export const buildNodes = (content: string) => {
     const json = hclParser.parseToObject(content);
+    console.log(json);
 
     let entry1: any = {};
     if (Array.isArray(json)) {
@@ -11,47 +23,18 @@ export const buildResourceNodes = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || !entry1.resource) return [];
+    if (!entry1 || (!entry1.module && !entry1.resource)) return [];
 
-    const MARGIN = 50;
-    let top = MARGIN;
-    let newTop = MARGIN;
-    let col = 0;
-    const maxCols = 3;
+    setNewTop(MARGIN);
 
-    return Object.keys(entry1.resource).map((key) => {
-        const innerEntry = entry1.resource[key];
-        return Object.keys(innerEntry).filter((innerKey) => {
-            const innerArray = innerEntry[innerKey];
-            return Array.isArray(innerArray) && innerArray.length;
-        }).map((innerKey) => {
-            const innerArray = innerEntry[innerKey];
+    const moduleNodes = entry1.module ? buildModuleNodes(entry1.module, newTop, column) : [];
+    setColumn(0);
+    const resourceNodes = entry1.resource ? buildResourceNodes(entry1.resource, newTop, column) : [];
 
-            const data = innerArray[0];
-            const WIDTH = 400;
-            const x = (col * (WIDTH + MARGIN)) + MARGIN;
-            const y = top;
-
-            const h = calcHeight(data) + MARGIN;
-            newTop = Math.max(newTop, top + h + MARGIN);
-
-            col++;
-            if (col > maxCols) {
-                col = 0;
-                top = newTop;
-            }
-
-            return ({
-                id: `${key}.${innerKey}`,
-                type: 'resource',
-                data: { label: `${innerKey} (${key})`, data },
-                position: { x, y }
-            });
-        });
-    }).flat();
+    return moduleNodes.concat(resourceNodes);
 }
 
-const calcHeight = (data: any) => {
+export const calcNodeHeight = (data: any) => {
     let h = 0;
 
     if (
@@ -65,12 +48,12 @@ const calcHeight = (data: any) => {
         h += 20; // for the object/array title
         if (Array.isArray(data)) {
             data.forEach((value) => {
-                h += calcHeight(value);
+                h += calcNodeHeight(value);
             });
         } else {
             Object.keys(data).forEach((key) => {
                 const value = data[key];
-                h += calcHeight(value);
+                h += calcNodeHeight(value);
             });
         }
     }
@@ -78,7 +61,7 @@ const calcHeight = (data: any) => {
     return h;
 }
 
-export const buildResourceEdges = (content: string) => {
+export const buildEdges = (content: string) => {
     const json = hclParser.parseToObject(content);
 
     let entry1: any = {};
@@ -88,24 +71,15 @@ export const buildResourceEdges = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || !entry1.resource) return [];
+    if (!entry1 || (!entry1.resource && !entry1.module)) return [];
 
-    return Object.keys(entry1.resource).map((key) => {
-        const innerEntry = entry1.resource[key];
-        return Object.keys(innerEntry).filter((innerKey) => {
-            const innerArray = innerEntry[innerKey];
-            return Array.isArray(innerArray) && innerArray.length;
-        }).map((innerKey) => {
-            const innerArray = innerEntry[innerKey];
+    const moduleEdges = entry1.module ? buildModuleEdges(entry1.module) : [];
+    const resourceEdges = entry1.resource ? buildResourceEdges(entry1.resource) : [];
 
-            const data = innerArray[0];
-
-            return getEdges(data, `${key}.${innerKey}`, `${key}.${innerKey}`);
-        }).flat();
-    }).flat();
+    return moduleEdges.concat(resourceEdges);
 }
 
-const getEdges = (data: any, resourceKey: string, parentKey: string) => {
+export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
     let edges: Edge[] = [];
 
     if (Array.isArray(data)) {
