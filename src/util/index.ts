@@ -42,7 +42,8 @@ export const calcNodeHeight = (data: any) => {
         typeof data === "boolean" ||
         typeof data === "number" ||
         typeof data === "string" ||
-        typeof data === "undefined") {
+        typeof data === "undefined" ||
+        data === null) {
         h += 20;
     } else if (typeof data === "object") {
         h += 20; // for the object/array title
@@ -102,7 +103,7 @@ export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
                 edges = edges.concat(getEdges(value, resourceKey, `${parentKey}.${index}`));
             }
         });
-    } else {
+    } else if (typeof data === "object" && data !== null) {
         Object.keys(data).forEach((key) => {
             const value = data[key];
 

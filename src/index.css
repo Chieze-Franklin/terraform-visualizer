@@ -84,6 +84,9 @@ code {
 .content-row-value-undefined {
   color: #025f43;
 }
+.content-row-value-object { /* this is for null objects */
+  color: #025f43;
+}
 
 .content-row-object {
   margin-left: 10px;

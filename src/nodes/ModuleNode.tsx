@@ -18,7 +18,8 @@ const ModuleNode = ({
     typeof data === "boolean" ||
     typeof data === "number" ||
     typeof data === "string" ||
-    typeof data === "undefined") {
+    typeof data === "undefined" ||
+    data === null) {
       return (<React.Fragment key={key}>
         <div className="content-row">
           {key ? `${key}: ` : ""}
