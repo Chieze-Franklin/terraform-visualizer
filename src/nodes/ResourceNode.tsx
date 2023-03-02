@@ -58,7 +58,7 @@ const ResourceNode = ({
       />
       <div className="title" title={data?.label}>
         <svg width="12px" height="12px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <g fill="none" fill-rule="evenodd">
+          <g fill="none" fillRule="evenodd">
           <path d="m0 0h32v32h-32z"/>
           <path d="m20.5358984 2.14359354c2.1435935 0 4.1243556 1.14359354 5.1961524 3l4.5358984 7.85640646c1.0717968 1.8564065
             1.0717968 4.1435935 0 6l-4.5358984 7.8564065c-1.0717968 1.8564064-3.0525589 3-5.1961524 3h-9.0717968c-2.14359352

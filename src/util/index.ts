@@ -23,13 +23,13 @@ export const buildNodes = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || !entry1.module || !entry1.resource) return [];
+    if (!entry1 || (!entry1.module && !entry1.resource)) return [];
 
     setNewTop(MARGIN);
 
-    const moduleNodes = buildModuleNodes(entry1.module, newTop, column);
+    const moduleNodes = entry1.module ? buildModuleNodes(entry1.module, newTop, column) : [];
     setColumn(0);
-    const resourceNodes = buildResourceNodes(entry1.resource, newTop, column);
+    const resourceNodes = entry1.resource ? buildResourceNodes(entry1.resource, newTop, column) : [];
 
     return moduleNodes.concat(resourceNodes);
 }
@@ -71,10 +71,10 @@ export const buildEdges = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || !entry1.resource || !entry1.module) return [];
+    if (!entry1 || (!entry1.resource && !entry1.module)) return [];
 
-    const moduleEdges = buildModuleEdges(entry1.module);
-    const resourceEdges = buildResourceEdges(entry1.resource);
+    const moduleEdges = entry1.module ? buildModuleEdges(entry1.module) : [];
+    const resourceEdges = entry1.resource ? buildResourceEdges(entry1.resource) : [];
 
     return moduleEdges.concat(resourceEdges);
 }
