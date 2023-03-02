@@ -17,9 +17,18 @@ code {
   height: 100vh;
 }
 
+.react-flow__node-module {
+  padding: 0;
+  background-color: #4a255f;
+  color: white;
+  width: 400px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
 .react-flow__node-resource {
   padding: 0;
-  background-color: #556677;
+  background-color: #243690;
   color: white;
   width: 400px;
   border-top-left-radius: 10px;
