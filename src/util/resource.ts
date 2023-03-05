@@ -1,4 +1,3 @@
-import hclParser from "hcl2-parser";
 import { Resource } from "../types";
 import { calcNodeHeight, column, getEdges, MARGIN, MAX_COLUMNS, newTop, setColumn, setNewTop, WIDTH } from ".";
 
