@@ -1,6 +1,6 @@
 import hclParser from "hcl2-parser";
 import { Resource } from "../types";
-import { calcNodeHeight, column, getEdges, MARGIN, MAX_COLUMNS, newTop, setColumn, setNewTop } from ".";
+import { calcNodeHeight, column, getEdges, MARGIN, MAX_COLUMNS, newTop, setColumn, setNewTop, WIDTH } from ".";
 
 export const buildResourceNodes = (resource: Resource, top: number, col: number) => {
     setNewTop(top);
@@ -15,7 +15,6 @@ export const buildResourceNodes = (resource: Resource, top: number, col: number)
             const innerArray = innerEntry[innerKey];
 
             const data = innerArray[0];
-            const WIDTH = 400;
             const x = (column * (WIDTH + MARGIN)) + MARGIN;
             const y = top;
 

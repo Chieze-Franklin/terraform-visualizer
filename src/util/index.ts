@@ -2,9 +2,11 @@ import { Edge } from "reactflow";
 import hclParser from "hcl2-parser";
 import { buildModuleEdges, buildModuleNodes } from "./module";
 import { buildResourceEdges, buildResourceNodes } from "./resource";
+import { buildVariableEdges, buildVariableNodes } from "./variable";
 
 export const MARGIN = 50;
 export const MAX_COLUMNS = 3;
+export const WIDTH = 400;
 
 export let newTop = 0;
 export const setNewTop = (top: number) => newTop = top;
@@ -23,15 +25,17 @@ export const buildNodes = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || (!entry1.module && !entry1.resource)) return [];
+    if (!entry1 || (!entry1.module && !entry1.resource && !entry1.variable)) return [];
 
     setNewTop(MARGIN);
 
+    const variableNodes = entry1.variable ? buildVariableNodes(entry1.variable, newTop, column) : [];
+    setColumn(0);
     const moduleNodes = entry1.module ? buildModuleNodes(entry1.module, newTop, column) : [];
     setColumn(0);
     const resourceNodes = entry1.resource ? buildResourceNodes(entry1.resource, newTop, column) : [];
 
-    return moduleNodes.concat(resourceNodes);
+    return [...variableNodes, ...moduleNodes, ...resourceNodes];
 }
 
 export const calcNodeHeight = (data: any) => {
@@ -72,12 +76,13 @@ export const buildEdges = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || (!entry1.resource && !entry1.module)) return [];
+    if (!entry1 || (!entry1.resource && !entry1.module && !entry1.variable)) return [];
 
     const moduleEdges = entry1.module ? buildModuleEdges(entry1.module) : [];
     const resourceEdges = entry1.resource ? buildResourceEdges(entry1.resource) : [];
+    const variableEdges = entry1.variable ? buildVariableEdges(entry1.variable) : [];
 
-    return moduleEdges.concat(resourceEdges);
+    return [...variableEdges, ...moduleEdges, ...resourceEdges];
 }
 
 export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
