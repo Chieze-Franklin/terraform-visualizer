@@ -86,18 +86,20 @@ export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
     if (Array.isArray(data)) {
         data.forEach((value, index) => {
             if (typeof value === "string") {
-                if (value.startsWith('${') && value.endsWith('}')) {
-                    const innerVal = value.substring(2, value.length - 1);
-                    const innerValParts = innerVal.split('.');
-                    if (innerValParts.length >= 2) {
-                        edges.push({
-                            id: `${parentKey}.${index}->${innerValParts[0]}.${innerValParts[1]}`,
-                            source: resourceKey,
-                            sourceHandle: `${parentKey}.${index}`,
-                            target: `${innerValParts[0]}.${innerValParts[1]}`,
-                            animated: true
-                        });
-                    }
+                if (value.includes('${') && value.includes('}')) {
+                    const variables = getVariableRefs(value);
+                    variables.forEach((variable) => {
+                        const variableParts = variable.split('.');
+                        if (variableParts.length >= 2) {
+                            edges.push({
+                                id: `${parentKey}.${index}->${variableParts[0]}.${variableParts[1]}`,
+                                source: resourceKey,
+                                sourceHandle: `${parentKey}.${index}`,
+                                target: `${variableParts[0]}.${variableParts[1]}`,
+                                animated: true
+                            });
+                        }
+                    });
                 }
             } else if (typeof value === "object") {
                 edges = edges.concat(getEdges(value, resourceKey, `${parentKey}.${index}`));
@@ -108,18 +110,20 @@ export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
             const value = data[key];
 
             if (typeof value === "string") {
-                if (value.startsWith('${') && value.endsWith('}')) {
-                    const innerVal = value.substring(2, value.length - 1);
-                    const innerValParts = innerVal.split('.');
-                    if (innerValParts.length >= 2) {
-                        edges.push({
-                            id: `${parentKey}.${key}->${innerValParts[0]}.${innerValParts[1]}`,
-                            source: resourceKey,
-                            sourceHandle: `${parentKey}.${key}`,
-                            target: `${innerValParts[0]}.${innerValParts[1]}`,
-                            animated: true
-                        });
-                    }
+                if (value.includes('${') && value.includes('}')) {
+                    const variables = getVariableRefs(value);
+                    variables.forEach((variable) => {
+                        const variableParts = variable.split('.');
+                        if (variableParts.length >= 2) {
+                            edges.push({
+                                id: `${parentKey}.${key}->${variableParts[0]}.${variableParts[1]}`,
+                                source: resourceKey,
+                                sourceHandle: `${parentKey}.${key}`,
+                                target: `${variableParts[0]}.${variableParts[1]}`,
+                                animated: true,
+                            });
+                        }
+                    });
                 }
             } else if (typeof value === "object") {
                 edges = edges.concat(getEdges(value, resourceKey, `${parentKey}.${key}`));
@@ -128,4 +132,19 @@ export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
     }
 
     return edges;
+}
+
+const getVariableRefs = (value: string) => {
+    const regex = new RegExp(/([\w-]+[.][\w-]+)/g);
+    const result = [];
+
+    for (const match of value.matchAll(regex)) {
+        // only consider matches not preceded by a period
+        if (match && match.index && match.index > 0 && value[match.index - 1] === ".") {
+            continue;
+        }
+        result.push(match[1]);
+    }
+
+    return result;
 }
