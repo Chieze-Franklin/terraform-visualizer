@@ -1,15 +1,15 @@
-import { Module } from "../types";
+import { Variable } from "../types";
 import { calcNodeHeight, column, getEdges, MARGIN, MAX_COLUMNS, newTop, setColumn, setNewTop, WIDTH } from ".";
 
-export const buildModuleNodes = (module: Module, top: number, col: number) => {
+export const buildVariableNodes = (variable: Variable, top: number, col: number) => {
     setNewTop(top);
     setColumn(col);
 
-    return Object.keys(module).filter((key) => {
-        const array = module[key];
+    return Object.keys(variable).filter((key) => {
+        const array = variable[key];
         return Array.isArray(array) && array.length;
     }).map((key) => {
-        const array = module[key];
+        const array = variable[key];
 
         const data = array[0];
         const x = (column * (WIDTH + MARGIN)) + MARGIN;
@@ -25,20 +25,20 @@ export const buildModuleNodes = (module: Module, top: number, col: number) => {
         }
 
         return ({
-            id: `module.${key}`,
-            type: 'module',
+            id: `var.${key}`,
+            type: 'variable',
             data: { label: key, data },
             position: { x, y }
         });
     });
 }
 
-export const buildModuleEdges = (module: Module) => {
-    return Object.keys(module).filter((key) => {
-        const array = module[key];
+export const buildVariableEdges = (variable: Variable) => {
+    return Object.keys(variable).filter((key) => {
+        const array = variable[key];
         return Array.isArray(array) && array.length;
     }).map((key) => {
-        const array = module[key];
+        const array = variable[key];
 
         const data = array[0];
 

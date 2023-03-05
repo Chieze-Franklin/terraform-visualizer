@@ -13,6 +13,7 @@ import ReactFlow, {
 
 import ModuleNode from "./nodes/ModuleNode";
 import ResourceNode from "./nodes/ResourceNode";
+import VariableNode from "./nodes/VariableNode";
 import { buildEdges, buildNodes } from "./util";
 
 import "reactflow/dist/style.css";
@@ -23,7 +24,8 @@ const initialEdges: Edge[] = [];
 
 const nodeTypes = {
   module: ModuleNode,
-  resource: ResourceNode
+  resource: ResourceNode,
+  variable: VariableNode
 };
 
 const BasicFlow = (props: { content?: string | null, title?: string | null }) => {
