@@ -53,6 +53,15 @@ code {
   border-top-right-radius: 10px;
 }
 
+.react-flow__node-variables {
+  padding: 0;
+  background-color: #03881b;
+  color: white;
+  width: 400px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
 .react-flow__panel {
   font-weight: bold;
 }

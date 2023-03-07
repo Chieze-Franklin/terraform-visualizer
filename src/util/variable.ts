@@ -42,6 +42,6 @@ export const buildVariableEdges = (variable: Variable) => {
 
         const data = array[0];
 
-        return getEdges(data, `module.${key}`, `module.${key}`);
+        return getEdges(data, `var.${key}`, `var.${key}`);
     }).flat();
 }
