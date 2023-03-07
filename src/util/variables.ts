@@ -8,7 +8,7 @@ export const buildVariablesNode = (variable: Variable, top: number, col: number)
     const data = Object.keys(variable).filter((key) => {
         const array = variable[key];
         return Array.isArray(array) && array.length;
-    }).reduce((aggregate: Record<string, any>, key) => {
+    }).reduce((aggregate: Record<string, Record<string, any>>, key) => {
         const array = variable[key];
         const d = array[0];
         aggregate[key] = d;
@@ -39,7 +39,7 @@ export const buildVariablesEdges = (variable: Variable) => {
     const data = Object.keys(variable).filter((key) => {
         const array = variable[key];
         return Array.isArray(array) && array.length;
-    }).reduce((aggregate: Record<string, any>, key) => {
+    }).reduce((aggregate: Record<string, Record<string, any>>, key) => {
         const array = variable[key];
         const d = array[0];
         aggregate[key] = d;

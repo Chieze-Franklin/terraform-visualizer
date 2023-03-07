@@ -13,6 +13,7 @@ import ReactFlow, {
   useEdgesState
 } from "reactflow";
 
+import DataNode from "./nodes/DataNode";
 import LocalsNode from "./nodes/LocalsNode";
 import ModuleNode from "./nodes/ModuleNode";
 import ResourceNode from "./nodes/ResourceNode";
@@ -27,6 +28,7 @@ const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];
 
 const nodeTypes = {
+  data: DataNode,
   locals: LocalsNode,
   module: ModuleNode,
   resource: ResourceNode,
