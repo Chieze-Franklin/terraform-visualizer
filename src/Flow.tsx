@@ -17,6 +17,7 @@ import LocalsNode from "./nodes/LocalsNode";
 import ModuleNode from "./nodes/ModuleNode";
 import ResourceNode from "./nodes/ResourceNode";
 import VariableNode from "./nodes/VariableNode";
+import VariablesNode from "./nodes/VariablesNode";
 import { buildEdges, buildNodes } from "./util";
 
 import "reactflow/dist/style.css";
@@ -29,7 +30,8 @@ const nodeTypes = {
   locals: LocalsNode,
   module: ModuleNode,
   resource: ResourceNode,
-  variable: VariableNode
+  variable: VariableNode,
+  variables: VariablesNode
 };
 
 const BasicFlow = (props: { content?: string | null, title?: string | null }) => {
