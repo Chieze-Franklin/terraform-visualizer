@@ -1,11 +1,11 @@
 # Terraform Visualizer
 
 <video controls>
-  <source src="https://user-images.githubusercontent.com/6097630/219801816-44a3c629-1243-461f-abe3-5de9f9a35b49.mp4" type="video/mp4">
+  <source src="https://user-images.githubusercontent.com/6097630/223296972-8375ca1e-358d-41db-a89f-1538823017b6.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-https://user-images.githubusercontent.com/6097630/219801816-44a3c629-1243-461f-abe3-5de9f9a35b49.mp4
+https://user-images.githubusercontent.com/6097630/223296972-8375ca1e-358d-41db-a89f-1538823017b6.mp4
 
 Terraform Visualizer displays the resources in your Terraform config (and the relationships among resources)
 using a graph of nodes (for the resources) and edges (for the relationships).
