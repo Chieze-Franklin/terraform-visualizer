@@ -1,9 +1,11 @@
+import React from "react";
 import { useCallback, useEffect } from "react";
 import ReactFlow, {
   Node,
   addEdge,
   Background,
   Controls,
+  MiniMap,
   Edge,
   Connection,
   Panel,
@@ -11,6 +13,7 @@ import ReactFlow, {
   useEdgesState
 } from "reactflow";
 
+import LocalsNode from "./nodes/LocalsNode";
 import ModuleNode from "./nodes/ModuleNode";
 import ResourceNode from "./nodes/ResourceNode";
 import VariableNode from "./nodes/VariableNode";
@@ -23,6 +26,7 @@ const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];
 
 const nodeTypes = {
+  locals: LocalsNode,
   module: ModuleNode,
   resource: ResourceNode,
   variable: VariableNode
@@ -58,6 +62,7 @@ const BasicFlow = (props: { content?: string | null, title?: string | null }) =>
       {props.title ? <Panel position="top-center">{props.title}</Panel> : null}
       <Background />
       <Controls />
+      <MiniMap />
     </ReactFlow>
   );
 };

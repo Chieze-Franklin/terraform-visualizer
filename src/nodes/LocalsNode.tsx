@@ -4,7 +4,7 @@ import { Handle, NodeProps, Position } from "reactflow";
 const ROW_HEIGHT = 20;
 const TOP_OFFSET = 50;
 
-const ResourceNode = ({
+const LocalsNode = ({
   id,
   data,
 }: Partial<NodeProps>) => {
@@ -26,6 +26,13 @@ const ResourceNode = ({
           <span className={`content-row-value content-row-value-${typeof data}`} title={`${data}`}>{`${data}`}</span>
         </div>
         {fullKey ? <Handle
+          type="target"
+          id={`${id}.${fullKey}`}
+          position={Position.Left}
+          isConnectable={false}
+          style={{ top: (ROW_HEIGHT * row) + (ROW_HEIGHT / 2) + TOP_OFFSET }}
+        /> : null}
+        {fullKey ? <Handle
           type="source"
           id={`${id}.${fullKey}`}
           position={Position.Right}
@@ -39,6 +46,13 @@ const ResourceNode = ({
       return (<React.Fragment key={key}>
         <div className={`content-row-object ${objClass}`}>
           {key ? <div className="content-row-object-title" title={`${key}: `}>{`${key}: `}</div> : null}
+          {fullKey ? <Handle
+          type="target"
+          id={`${id}.${fullKey}`}
+          position={Position.Left}
+          isConnectable={false}
+          style={{ top: (ROW_HEIGHT * row) + (ROW_HEIGHT / 2) + TOP_OFFSET }}
+        /> : null}
           {Array.isArray(data)
           ? data.map((value, index) => getContent(value, `${index}`, `${fullKey}.${index}`))
           : Object.keys(data).map((k) => getContent(data[k], k, `${fullKey}.${k}`))}
@@ -58,19 +72,18 @@ const ResourceNode = ({
         isConnectable={false}
       />
       <div className="title" title={data?.label}>
-        <svg width="12px" height="12px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <g fill="none" fillRule="evenodd">
-          <path d="m0 0h32v32h-32z"/>
-          <path d="m20.5358984 2.14359354c2.1435935 0 4.1243556 1.14359354 5.1961524 3l4.5358984 7.85640646c1.0717968 1.8564065
-            1.0717968 4.1435935 0 6l-4.5358984 7.8564065c-1.0717968 1.8564064-3.0525589 3-5.1961524 3h-9.0717968c-2.14359352
-            0-4.12435564-1.1435936-5.19615241-3l-4.53589838-7.8564065c-1.07179677-1.8564065-1.07179677-4.1435935
-            0-6l4.53589838-7.85640646c1.07179677-1.85640646 3.05255889-3 5.19615241-3zm-4.5358984 7.85640646c-3.3137085
-            0-6 2.6862915-6 6s2.6862915 6 6 6 6-2.6862915 6-6-2.6862915-6-6-6zm0 2c2.209139 0 4 1.790861 4 4s-1.790861
-            4-4 4-4-1.790861-4-4 1.790861-4 4-4z" fill="white"/>
-          </g>
+        <svg width="12px" height="12px" viewBox="0 0 52 52" className="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <path d="M45,2H7C4.2,2,2,4.2,2,7V45c0,2.7,2.2,5,5,5H45c2.7,0,5-2.2,5-5V7C50,4.2,47.8,2,45,2z M42.6,41.4L42.6,41.4
+	        c-0.1,0.6-0.7,1.1-1.4,1.1h-31c-0.6,0-1.1-0.6-1.1-1.3V10.6c0-0.6,0.6-1.1,1.3-1.1h31c0.6,0,1.1,0.6,1.1,1.3V41.4z" fill="white" />
+            <path d="M33,22.4c1,0,3.1-0.8,3.1-3.6c0-2.8-2-2.9-2.6-2.9c-1.2,0-2.4,0.9-3.5,2.7c-1.1,1.9-2.3,3.9-2.3,3.9l0,0
+            c-0.3-1.3-0.5-2.4-0.6-2.9c-0.2-1.1-1.5-3.6-4.3-3.6c-2.7,0-5.2,1.6-5.2,1.6l0,0c-0.5,0.3-0.8,0.8-0.8,1.4c0,0.9,0.7,1.7,1.7,1.7
+            c0.3,0,0.5-0.1,0.7-0.2l0,0c0,0,2.1-1.2,2.5,0c0.1,0.3,0.2,0.7,0.4,1.1c0.5,1.8,1,3.9,1.4,5.8l-1.8,2.6c0,0-2-0.7-3.1-0.7
+            s-3.1,0.8-3.1,3.6s2,2.9,2.6,2.9c1.2,0,2.4-0.9,3.5-2.7c1.1-1.9,2.3-3.9,2.3-3.9c0.4,1.7,0.6,3.1,0.8,3.6c0.7,1.9,2.2,3.1,4.3,3.1
+            c0,0,2.1,0,4.7-1.4c0.6-0.2,1-0.8,1-1.5c0-0.9-0.7-1.7-1.7-1.7c-0.3,0-0.5,0.1-0.7,0.2l0,0c0,0-1.8,1-2.4,0.2
+            c-0.4-0.8-0.8-2-1.1-3.3c-0.3-1.2-0.6-2.7-0.8-4.1l1.8-2.6C30,21.7,32,22.4,33,22.4z" fill="white" />
         </svg>
-          {" "}
-          {data?.label}
+        {" "}
+        {data?.label}
       </div>
       <div className="content">
         {Object.keys(data?.data).map((key) => {
@@ -82,6 +95,6 @@ const ResourceNode = ({
   );
 };
 
-ResourceNode.displayName = "ResourceNode";
+LocalsNode.displayName = "LocalsNode";
 
-export default memo(ResourceNode);
+export default memo(LocalsNode);

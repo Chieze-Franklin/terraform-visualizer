@@ -17,6 +17,15 @@ code {
   height: 100vh;
 }
 
+.react-flow__node-locals {
+  padding: 0;
+  background-color: #00340a;
+  color: white;
+  width: 400px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
 .react-flow__node-module {
   padding: 0;
   background-color: #4a255f;
@@ -108,4 +117,7 @@ code {
 } */
 .content-row-object-title {
   height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -3,6 +3,7 @@ import hclParser from "hcl2-parser";
 import { buildModuleEdges, buildModuleNodes } from "./module";
 import { buildResourceEdges, buildResourceNodes } from "./resource";
 import { buildVariableEdges, buildVariableNodes } from "./variable";
+import { buildLocalsEdges, buildLocalsNode } from "./locals";
 
 export const MARGIN = 50;
 export const MAX_COLUMNS = 3;
@@ -25,17 +26,23 @@ export const buildNodes = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || (!entry1.module && !entry1.resource && !entry1.variable)) return [];
+    if (!entry1 
+        || (!entry1.module
+            && !entry1.resource
+            && !entry1.variable
+            && !entry1.locals)) return [];
 
     setNewTop(MARGIN);
 
+    const localsNode = entry1.locals ? buildLocalsNode(entry1.locals, newTop, column) : undefined;
+    setColumn(0);
     const variableNodes = entry1.variable ? buildVariableNodes(entry1.variable, newTop, column) : [];
     setColumn(0);
     const moduleNodes = entry1.module ? buildModuleNodes(entry1.module, newTop, column) : [];
     setColumn(0);
     const resourceNodes = entry1.resource ? buildResourceNodes(entry1.resource, newTop, column) : [];
 
-    return [...variableNodes, ...moduleNodes, ...resourceNodes];
+    return [...(localsNode ? [ localsNode ] : []), ...variableNodes, ...moduleNodes, ...resourceNodes];
 }
 
 export const calcNodeHeight = (data: any) => {
@@ -76,13 +83,18 @@ export const buildEdges = (content: string) => {
         entry1 = json;
     }
 
-    if (!entry1 || (!entry1.resource && !entry1.module && !entry1.variable)) return [];
+    if (!entry1 
+        || (!entry1.module
+            && !entry1.resource
+            && !entry1.variable
+            && !entry1.locals)) return [];
 
+    const localsEdges = entry1.locals ? buildLocalsEdges(entry1.locals) : [];
     const moduleEdges = entry1.module ? buildModuleEdges(entry1.module) : [];
     const resourceEdges = entry1.resource ? buildResourceEdges(entry1.resource) : [];
     const variableEdges = entry1.variable ? buildVariableEdges(entry1.variable) : [];
 
-    return [...variableEdges, ...moduleEdges, ...resourceEdges];
+    return [...localsEdges, ...variableEdges, ...moduleEdges, ...resourceEdges];
 }
 
 export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
@@ -96,13 +108,24 @@ export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
                     variables.forEach((variable) => {
                         const variableParts = variable.split('.');
                         if (variableParts.length >= 2) {
-                            edges.push({
-                                id: `${parentKey}.${index}->${variableParts[0]}.${variableParts[1]}`,
-                                source: resourceKey,
-                                sourceHandle: `${parentKey}.${index}`,
-                                target: `${variableParts[0]}.${variableParts[1]}`,
-                                animated: true
-                            });
+                            if (variableParts[0] === "local") {
+                                edges.push({
+                                    id: `${parentKey}.${index}->${variableParts[0]}.${variableParts[1]}`,
+                                    source: resourceKey,
+                                    sourceHandle: `${parentKey}.${index}`,
+                                    target: "local",
+                                    targetHandle: `local.${variableParts[1]}`,
+                                    animated: true
+                                });
+                            } else {
+                                edges.push({
+                                    id: `${parentKey}.${index}->${variableParts[0]}.${variableParts[1]}`,
+                                    source: resourceKey,
+                                    sourceHandle: `${parentKey}.${index}`,
+                                    target: `${variableParts[0]}.${variableParts[1]}`,
+                                    animated: true
+                                });
+                            }
                         }
                     });
                 }
@@ -120,13 +143,24 @@ export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
                     variables.forEach((variable) => {
                         const variableParts = variable.split('.');
                         if (variableParts.length >= 2) {
-                            edges.push({
-                                id: `${parentKey}.${key}->${variableParts[0]}.${variableParts[1]}`,
-                                source: resourceKey,
-                                sourceHandle: `${parentKey}.${key}`,
-                                target: `${variableParts[0]}.${variableParts[1]}`,
-                                animated: true,
-                            });
+                            if (variableParts[0] === "local") {
+                                edges.push({
+                                    id: `${parentKey}.${key}->${variableParts[0]}.${variableParts[1]}`,
+                                    source: resourceKey,
+                                    sourceHandle: `${parentKey}.${key}`,
+                                    target: "local",
+                                    targetHandle: `local.${variableParts[1]}`,
+                                    animated: true,
+                                });
+                            } else {
+                                edges.push({
+                                    id: `${parentKey}.${key}->${variableParts[0]}.${variableParts[1]}`,
+                                    source: resourceKey,
+                                    sourceHandle: `${parentKey}.${key}`,
+                                    target: `${variableParts[0]}.${variableParts[1]}`,
+                                    animated: true,
+                                });
+                            }
                         }
                     });
                 }
@@ -141,7 +175,7 @@ export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
 
 const getVariableRefs = (value: string) => {
     const regex = new RegExp(/([\w-]+[.][\w-]+)/g);
-    const result = [];
+    const result: string[] = [];
 
     for (const match of value.matchAll(regex)) {
         // only consider matches not preceded by a period

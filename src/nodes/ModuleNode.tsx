@@ -28,7 +28,7 @@ const ModuleNode = ({
         {fullKey ? <Handle
           type="source"
           id={`${id}.${fullKey}`}
-          position={Position.Left}
+          position={Position.Right}
           isConnectable={false}
           style={{ top: (ROW_HEIGHT * row) + (ROW_HEIGHT / 2) + TOP_OFFSET }}
         /> : null}
@@ -38,7 +38,7 @@ const ModuleNode = ({
       objClasses.push(objClass!);
       return (<React.Fragment key={key}>
         <div className={`content-row-object ${objClass}`}>
-          {key ? <div className="content-row-object-title">{`${key}: `}</div> : null}
+          {key ? <div className="content-row-object-title" title={`${key}: `}>{`${key}: `}</div> : null}
           {Array.isArray(data)
           ? data.map((value, index) => getContent(value, `${index}`, `${fullKey}.${index}`))
           : Object.keys(data).map((k) => getContent(data[k], k, `${fullKey}.${k}`))}
