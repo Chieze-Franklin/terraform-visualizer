@@ -1,10 +1,7 @@
 import { Module } from "../types";
-import { calcNodeHeight, column, getEdges, MARGIN, MAX_COLUMNS, newTop, setColumn, setNewTop, WIDTH } from ".";
+import { calcNodeHeight, columns, setColumns, getEdges, MARGIN, WIDTH } from ".";
 
-export const buildModuleNodes = (module: Module, top: number, col: number) => {
-    setNewTop(top);
-    setColumn(col);
-
+export const buildModuleNodes = (module: Module) => {
     return Object.keys(module).filter((key) => {
         const array = module[key];
         return Array.isArray(array) && array.length;
@@ -12,17 +9,18 @@ export const buildModuleNodes = (module: Module, top: number, col: number) => {
         const array = module[key];
 
         const data = array[0];
-        const x = (column * (WIDTH + MARGIN)) + MARGIN;
-        const y = top;
+
+        const column = columns.reduce((acc, col) => {
+            if (col.top <= acc.top) {
+                return col;
+            }
+            return acc;
+        }, columns[0]);
+        const x = (column.col * (WIDTH + MARGIN)) + MARGIN;
+        const y = column.top;
 
         const h = calcNodeHeight(data) + MARGIN;
-        setNewTop(Math.max(newTop, top + h + MARGIN));
-
-        setColumn(column + 1);
-        if (column > MAX_COLUMNS) {
-            setColumn(0);
-            top = newTop;
-        }
+        setColumns({ col: column.col, top: column.top + h + MARGIN });
 
         return ({
             id: `module.${key}`,

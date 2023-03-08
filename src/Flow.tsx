@@ -62,6 +62,7 @@ const BasicFlow = (props: { content?: string | null, title?: string | null }) =>
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       nodeTypes={nodeTypes}
+      fitView={true}
     >
       {props.title ? <Panel position="top-center">{props.title}</Panel> : null}
       <Background />

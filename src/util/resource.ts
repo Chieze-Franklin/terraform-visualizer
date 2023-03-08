@@ -1,10 +1,7 @@
 import { Resource } from "../types";
-import { calcNodeHeight, column, getEdges, MARGIN, MAX_COLUMNS, newTop, setColumn, setNewTop, WIDTH } from ".";
+import { calcNodeHeight, columns, setColumns, getEdges, MARGIN, WIDTH } from ".";
 
-export const buildResourceNodes = (resource: Resource, top: number, col: number) => {
-    setNewTop(top);
-    setColumn(col);
-
+export const buildResourceNodes = (resource: Resource) => {
     return Object.keys(resource).map((key) => {
         const innerEntry = resource[key];
         return Object.keys(innerEntry).filter((innerKey) => {
@@ -14,17 +11,18 @@ export const buildResourceNodes = (resource: Resource, top: number, col: number)
             const innerArray = innerEntry[innerKey];
 
             const data = innerArray[0];
-            const x = (column * (WIDTH + MARGIN)) + MARGIN;
-            const y = top;
+
+            const column = columns.reduce((acc, col) => {
+                if (col.top <= acc.top) {
+                    return col;
+                }
+                return acc;
+            }, columns[0]);
+            const x = (column.col * (WIDTH + MARGIN)) + MARGIN;
+            const y = column.top;
 
             const h = calcNodeHeight(data) + MARGIN;
-            setNewTop(Math.max(newTop, top + h + MARGIN));
-
-            setColumn(column + 1);
-            if (column > MAX_COLUMNS) {
-                setColumn(0);
-                top = newTop;
-            }
+            setColumns({ col: column.col, top: column.top + h + MARGIN });
 
             return ({
                 id: `${key}.${innerKey}`,

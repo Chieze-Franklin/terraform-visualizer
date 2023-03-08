@@ -1,10 +1,7 @@
 import { Variable } from "../types";
-import { calcNodeHeight, column, getEdges, MARGIN, MAX_COLUMNS, newTop, setColumn, setNewTop, WIDTH } from ".";
+import { calcNodeHeight, columns, setColumns, getEdges, MARGIN, WIDTH } from ".";
 
-export const buildVariablesNode = (variable: Variable, top: number, col: number) => {
-    setNewTop(top);
-    setColumn(col);
-
+export const buildVariablesNode = (variable: Variable) => {
     const data = Object.keys(variable).filter((key) => {
         const array = variable[key];
         return Array.isArray(array) && array.length;
@@ -15,17 +12,17 @@ export const buildVariablesNode = (variable: Variable, top: number, col: number)
         return aggregate;
     }, {});
 
-    const x = (column * (WIDTH + MARGIN)) + MARGIN;
-    const y = top;
+    const column = columns.reduce((acc, col) => {
+        if (col.top <= acc.top) {
+            return col;
+        }
+        return acc;
+    }, columns[0]);
+    const x = (column.col * (WIDTH + MARGIN)) + MARGIN;
+    const y = column.top;
 
     const h = calcNodeHeight(data) + MARGIN;
-    setNewTop(Math.max(newTop, top + h + MARGIN));
-
-    setColumn(column + 1);
-    if (column > MAX_COLUMNS) {
-        setColumn(0);
-        top = newTop;
-    }
+    setColumns({ col: column.col, top: column.top + h + MARGIN });
 
     return ({
         id: 'var',
