@@ -4,16 +4,30 @@ import { buildModuleEdges, buildModuleNodes } from "./module";
 import { buildResourceEdges, buildResourceNodes } from "./resource";
 import { buildLocalsEdges, buildLocalsNode } from "./locals";
 import { buildVariablesEdges, buildVariablesNode } from "./variables";
+import { buildDataEdges, buildDataNodes } from "./data";
 
 export const MARGIN = 50;
-export const MAX_COLUMNS = 3;
 export const WIDTH = 400;
 
-export let newTop = 0;
-export const setNewTop = (top: number) => newTop = top;
-
-export let column = 0;
-export const setColumn = (col: number) => column = col;
+export type Column = { col: number, top: number };
+export const columns: Column[] = [{
+    col: 0,
+    top: 0
+}, {
+    col: 1,
+    top: 0
+}, {
+    col: 2,
+    top: 0
+}, {
+    col: 3,
+    top: 0
+}];
+export const setColumns = (col: Column) => columns.forEach((c) => {
+    if (c.col === col.col) {
+        c.top = col.top;
+    }
+})
 
 export const buildNodes = (content: string) => {
     const json = hclParser.parseToObject(content);
@@ -30,21 +44,19 @@ export const buildNodes = (content: string) => {
         || (!entry1.module
             && !entry1.resource
             && !entry1.variable
-            && !entry1.locals)) return [];
+            && !entry1.locals
+            && !entry1.data)) return [];
 
-    setNewTop(MARGIN);
-
-    const localsNode = entry1.locals ? buildLocalsNode(entry1.locals, newTop, column) : undefined;
-    // setColumn(0);
-    const variableNode = entry1.variable ? buildVariablesNode(entry1.variable, newTop, column) : undefined;
-    setColumn(0);
-    const moduleNodes = entry1.module ? buildModuleNodes(entry1.module, newTop, column) : [];
-    setColumn(0);
-    const resourceNodes = entry1.resource ? buildResourceNodes(entry1.resource, newTop, column) : [];
+    const localsNode = entry1.locals ? buildLocalsNode(entry1.locals) : undefined;
+    const variableNode = entry1.variable ? buildVariablesNode(entry1.variable) : undefined;
+    const dataNodes = entry1.data ? buildDataNodes(entry1.data) : [];
+    const moduleNodes = entry1.module ? buildModuleNodes(entry1.module) : [];
+    const resourceNodes = entry1.resource ? buildResourceNodes(entry1.resource) : [];
 
     return [
         ...(localsNode ? [ localsNode ] : []),
         ...(variableNode ? [ variableNode ] : []),
+        ...dataNodes,
         ...moduleNodes,
         ...resourceNodes
     ];
@@ -92,14 +104,16 @@ export const buildEdges = (content: string) => {
         || (!entry1.module
             && !entry1.resource
             && !entry1.variable
-            && !entry1.locals)) return [];
+            && !entry1.locals
+            && !entry1.data)) return [];
 
     const localsEdges = entry1.locals ? buildLocalsEdges(entry1.locals) : [];
     const moduleEdges = entry1.module ? buildModuleEdges(entry1.module) : [];
+    const dataEdges = entry1.data ? buildDataEdges(entry1.data) : [];
     const resourceEdges = entry1.resource ? buildResourceEdges(entry1.resource) : [];
     const variableEdges = entry1.variable ? buildVariablesEdges(entry1.variable) : [];
 
-    return [...localsEdges, ...variableEdges, ...moduleEdges, ...resourceEdges];
+    return [...localsEdges, ...variableEdges, ...dataEdges, ...moduleEdges, ...resourceEdges];
 }
 
 export const getEdges = (data: any, resourceKey: string, parentKey: string) => {
