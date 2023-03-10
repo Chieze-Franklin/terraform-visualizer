@@ -87,7 +87,7 @@ export default function DropZoneModal(props: DropZoneModalProps) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Upload Terraform Files
+                    Visualize Terraform Files
                 </Typography>
                 <div {...getRootProps()}>
                     <input {...getInputProps()} />
