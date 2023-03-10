@@ -37,6 +37,25 @@ const nodeTypes = {
   variables: VariablesNode
 };
 
+const nodeColor = (node: Node) => {
+  switch (node.type) {
+    case 'data':
+      return '#f07706';
+    case 'locals':
+      return '#00340a';
+    case 'module':
+      return '#4a255f';
+    case 'resource':
+      return '#243690';
+    case 'variable':
+      return '#03881b';
+    case 'variables':
+      return '#03881b';
+    default:
+      return '#ff0072';
+  }
+};
+
 type FlowProps = {
   content?: string | null;
   title?: string | null;
@@ -66,7 +85,7 @@ const BasicFlow = (props: FlowProps) => {
   const [openDZModal, setOpenDZModal] = React.useState(false);
   const handleOpenDZModal = () => setOpenDZModal(true);
   const handleCloseDZModal = () => setOpenDZModal(false);
-  const handleFileUpload = (text: string) => {console.log('>>>>>>got upload');setTerraformText(text);}
+  const handleFileUpload = (text: string) => setTerraformText(text);
 
   return (
     <ReactFlow
@@ -84,7 +103,7 @@ const BasicFlow = (props: FlowProps) => {
         showUploadDialog={!props.integrated}
         onUploadClick={handleOpenDZModal}
       />
-      <MiniMap />
+      <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable />
       <DropZoneModal
         open={openDZModal}
         onClose={handleCloseDZModal}
