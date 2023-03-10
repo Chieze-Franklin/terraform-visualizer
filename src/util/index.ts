@@ -29,6 +29,13 @@ export const setColumns = (col: Column) => columns.forEach((c) => {
     }
 })
 
+export const reset = () => {
+    setColumns({ col: 0, top: 0 });
+    setColumns({ col: 1, top: 0 });
+    setColumns({ col: 2, top: 0 });
+    setColumns({ col: 3, top: 0 });
+}
+
 export const buildNodes = (content: string) => {
     const json = hclParser.parseToObject(content);
     console.log(json);
@@ -54,8 +61,8 @@ export const buildNodes = (content: string) => {
     const resourceNodes = entry1.resource ? buildResourceNodes(entry1.resource) : [];
 
     return [
-        ...(localsNode ? [ localsNode ] : []),
         ...(variableNode ? [ variableNode ] : []),
+        ...(localsNode ? [ localsNode ] : []),
         ...dataNodes,
         ...moduleNodes,
         ...resourceNodes
