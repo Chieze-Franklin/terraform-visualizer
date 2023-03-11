@@ -91,4 +91,4 @@ First, use any URL-encoder (e.g. https://www.urlencoder.org/) to encode the Terr
 
 Then, provide the encoded value in the URL by assigning it to the `content` query.
 
-![image](https://user-images.githubusercontent.com/6097630/218087143-6eae9448-ff25-4cc9-8c06-ad3582277dc5.png)
+![image](https://user-images.githubusercontent.com/6097630/224460532-62862059-b5c3-4878-b46c-41343bdf997a.png)
