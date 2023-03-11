@@ -23,6 +23,8 @@ import { buildEdges, buildNodes, reset } from "./util";
 import "reactflow/dist/style.css";
 import { CustomControls } from "./controls/CustomControls";
 import DropZoneModal from "./components/DropZoneModal";
+import MultiPurposeDialog from "./components/MultiPurposeDialog";
+import Editor from "./components/Editor";
 
 const initialNodes: Node[] = [];
 
@@ -70,6 +72,8 @@ const BasicFlow = (props: FlowProps) => {
     [setEdges]
   );
   const [terraformText, setTerraformText] = React.useState('');
+  const [openModal, setOpenModal] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   useEffect(() => {
     reset();
@@ -82,10 +86,10 @@ const BasicFlow = (props: FlowProps) => {
     setEdges((curr) => [...curr, ...newEdges]);
   }, [props.content, terraformText, setNodes, setEdges])
 
-  const [openDZModal, setOpenDZModal] = React.useState(false);
-  const handleOpenDZModal = () => setOpenDZModal(true);
-  const handleCloseDZModal = () => setOpenDZModal(false);
-  const handleFileUpload = (text: string) => setTerraformText(text);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleFileUpload = (text?: string) => text && setTerraformText(text);
 
   return (
     <ReactFlow
@@ -101,14 +105,26 @@ const BasicFlow = (props: FlowProps) => {
       <Background />
       <CustomControls
         showUploadDialog={!props.integrated}
-        onUploadClick={handleOpenDZModal}
+        onUploadClick={handleOpenModal}
+        onEditorClick={handleOpenDialog}
       />
       <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable />
       <DropZoneModal
-        open={openDZModal}
-        onClose={handleCloseDZModal}
+        open={openModal}
+        onClose={handleCloseModal}
         onUpload={handleFileUpload}
         />
+      <MultiPurposeDialog
+        open={openDialog}
+        title="Visualize Terraform File"
+        onClose={() => setOpenDialog(false)}
+        actions={[]}
+      >
+        <Editor
+          value={terraformText}
+          onChange={handleFileUpload}
+        />
+      </MultiPurposeDialog>
     </ReactFlow>
   );
 };
