@@ -1,6 +1,6 @@
 {
   "name": "terraform-visualizer",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -26,7 +26,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=4000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
