@@ -1,5 +1,7 @@
 # Terraform Visualizer
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/39de4c11-b524-4c46-8894-2c4adab17d42/deploy-status)](https://app.netlify.com/sites/terraform-visualizer/deploys)
+
 <video controls>
   <source src="https://user-images.githubusercontent.com/6097630/224209573-f374df10-9e6a-4af9-abd0-6b68f9eb82fa.mp4" type="video/mp4">
   Your browser does not support the video tag.

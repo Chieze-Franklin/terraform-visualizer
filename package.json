@@ -2,6 +2,7 @@
   "name": "terraform-visualizer",
   "version": "0.1.7",
   "private": true,
+  "main": "build/index.html",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
